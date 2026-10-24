@@ -1,0 +1,168 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f3f5fc;
+  --panel: #ffffff;
+  --panel2: #eef1fb;
+  --line: #d5dbf0;
+  --ink: #121936;
+  --mute: #4f5b82;
+  --accent: #087a5c;
+  --violet: #6d44e0;
+  --pink: #c4287a;
+  --link: #0a6e55;
+  color-scheme: light;
+}
+.dark {
+  --bg: #0d1224;
+  --panel: #10172d;
+  --panel2: #172042;
+  --line: #243063;
+  --ink: #e6eaf7;
+  --mute: #9aa6c7;
+  --accent: #16f2b3;
+  --violet: #8b5cf6;
+  --pink: #ec4899;
+  --link: #16f2b3;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel2: var(--panel2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-mute: var(--mute);
+  --color-accent: var(--accent);
+  --color-violet: var(--violet);
+  --color-pink: var(--pink);
+  --color-link: var(--link);
+  --font-display: 'Space Grotesk Variable', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-bg font-sans text-ink antialiased;
+    line-height: 1.65;
+  }
+  /* brilhos de fundo (inspirados no site de referência) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        48rem 26rem at 85% -5%,
+        color-mix(in srgb, var(--violet) 22%, transparent),
+        transparent 65%
+      ),
+      radial-gradient(
+        40rem 24rem at 0% 100%,
+        color-mix(in srgb, var(--accent) 12%, transparent),
+        transparent 65%
+      );
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-bold tracking-tight;
+    line-height: 1.15;
+  }
+  a {
+    @apply text-link;
+  }
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-panel;
+  }
+  .card-hover {
+    @apply transition-all duration-200;
+  }
+  .card-hover:hover {
+    border-color: var(--accent);
+    box-shadow:
+      0 0 0 1px var(--accent),
+      0 12px 32px -16px var(--accent);
+    transform: translateY(-2px);
+  }
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-transparent px-5 py-2.5 font-bold no-underline transition;
+  }
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+  .btn-primary {
+    background-image: linear-gradient(90deg, #7c3aed, #db2777);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    filter: brightness(1.12);
+  }
+  .btn-ghost {
+    @apply border-line bg-panel2 text-ink;
+  }
+  .btn-ghost:hover:not(:disabled) {
+    border-color: var(--accent);
+  }
+  .field {
+    @apply w-full rounded-xl border border-line bg-panel2 px-4 py-2.5 text-ink;
+  }
+  .field:focus {
+    border-color: var(--accent);
+  }
+  .field[aria-invalid='true'] {
+    border-color: #e5484d;
+  }
+  .gradient-text {
+    background-image: linear-gradient(90deg, var(--accent), var(--violet) 60%, var(--pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-md border px-2 py-0.5 text-sm font-semibold;
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+  .page-flip {
+    transform-origin: left center;
+    animation: flip 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .bar-fill {
+    width: var(--w);
+    animation: grow 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+
+@keyframes flip {
+  from {
+    opacity: 0;
+    transform: perspective(1400px) rotateY(-9deg) translateX(28px);
+  }
+}
+@keyframes grow {
+  from {
+    width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
