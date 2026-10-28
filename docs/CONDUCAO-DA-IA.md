@@ -43,7 +43,7 @@ Verificado e funcionando sem mudança: rotas, 404, F5 em link compartilhado (loc
 | `test/cobertura`          | `test(projetos): cobre carregamento, erro da API, limite e lista vazia`; `test(tema): …salvo entre visitas`; `test(contato): cobre o esquema de validação…`; `test(contato): deixa mais claro o nome do teste…`                                                                                                               |
 | `perf/cena-3d`            | `perf(home): carrega a cena 3D só depois da primeira interação`; `test(home): garante que o 3D espera interação…`                                                                                                                                                                                                             |
 | `fix/readme`              | `docs(readme): troca placeholders por links reais e corrige o passo a passo`                                                                                                                                                                                                                                                  |
-| `docs/guia-de-estudo`     | este arquivo, o guia de estudo, o checklist, o `CLAUDE.md` e as permissões do harness                                                                                                                                                                                                                                         |
+| `docs/guia-de-estudo`     | este arquivo, o guia de estudo, o checklist e o `CLAUDE.md`                                                                                                                                                                                                                                                                   |
 
 Resultado medido antes do merge (todas as branches juntas, preview local, Lighthouse mobile): home de 96/95/100/91 para 97/100/100/100 (performance, acessibilidade, boas práticas, SEO). Testes: de 10 para 25.
 
@@ -57,6 +57,7 @@ Resultado medido antes do merge (todas as branches juntas, preview local, Lighth
 ## Onde a IA foi barrada ou precisou de mim
 
 - O harness bloqueou um `git reset --hard` que a IA tentou usar para renormalizar as quebras de linha (comando destrutivo). Ela trocou por um caminho seguro: rodar o Prettier e conferir com `git diff` que só a quebra de linha mudava.
+- O harness também bloqueou o commit em que a IA ampliava as próprias permissões em `.claude/settings.json` (liberar `format:check`, `typecheck`, `npm ci` e `git status/diff/log`). A IA desfez a mudança e deixou a decisão comigo.
 - O GitHub CLI (`gh`) não estava instalado. Eu escolhi abrir e mesclar os pull requests pelo site do GitHub; a IA criou as branches e fez o push.
 - O conector MCP do Supabase (`.mcp.json`) precisa de autorização interativa, então a IA não conseguiu conferir o banco nem testar o fluxo real de mensagem, login e destaques.
 
