@@ -1,8 +1,10 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { StaticCar } from './StaticCar'
 
-// A cena 3D (three.js) fica num pacote separado, baixado só depois que a página já está pronta.
+// A cena 3D (three.js) fica num pacote separado, baixado só quando a pessoa interage com a página.
 const Scene3D = lazy(() => import('./Scene3D'))
+
+const INTERACTIONS = ['pointermove', 'pointerdown', 'scroll', 'keydown'] as const
 
 function canRunScene() {
   const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
@@ -16,16 +18,27 @@ export function HeroScene() {
   useEffect(() => {
     const element = box.current
     if (!element || !canRunScene()) return
-    let timer: number | undefined
+    // Duas condições: a área do carro está na tela E a pessoa já mexeu na página.
+    // Assim a primeira carga fica leve (o three.js é o maior pacote do site).
+    let visible = false
+    let interacted = false
+    const tryStart = () => {
+      if (visible && interacted) setReady(true)
+    }
+    const onInteract = () => {
+      interacted = true
+      INTERACTIONS.forEach((name) => window.removeEventListener(name, onInteract))
+      tryStart()
+    }
     const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return
-      observer.disconnect()
-      timer = window.setTimeout(() => setReady(true), 1500)
+      visible = entry.isIntersecting
+      tryStart()
     })
     observer.observe(element)
+    INTERACTIONS.forEach((name) => window.addEventListener(name, onInteract, { passive: true }))
     return () => {
       observer.disconnect()
-      window.clearTimeout(timer)
+      INTERACTIONS.forEach((name) => window.removeEventListener(name, onInteract))
     }
   }, [])
 
