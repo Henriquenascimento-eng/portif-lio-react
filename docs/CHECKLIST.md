@@ -12,22 +12,23 @@
 | 6. Tema           | `store/theme.ts` (Zustand + localStorage) e o script no `index.html` que evita o flash                                   |
 | 7. Interface      | Tailwind, componentes `ui/`, cena 3D reativa a mouse e rolagem                                                           |
 | 8. Performance    | Páginas e cena 3D com `lazy`, TanStack Query com cache, fontes locais, `width`/`height` e `loading="lazy"` na imagem     |
-| 9. Testes         | `ContactForm.test.tsx`, `ProtectedRoute.test.tsx`, `github.test.ts`                                                      |
+| 9. Testes         | 7 arquivos `.test.ts(x)`, 25 testes (formulário, dashboard sem login, GitHub, estados da lista, tema, cena 3D)           |
 | 10. Deploy        | `vercel.json` e `.github/workflows/ci.yml` (a Vercel publica a cada push em `main` depois de conectar o repositório)     |
 | 11. Versionamento | Padrão no `README.md` e no `CLAUDE.md`; `commitlint` + Husky em `.husky/`                                                |
 | 12. Arquitetura   | Pastas descritas no README; ESLint, Prettier e `lint-staged`                                                             |
 
 ## O que só você pode fazer
 
-1. **Repositório no GitHub**: crie um repositório público, rode `git init` na pasta, `npm install` (isso ativa o Husky) e faça o primeiro push. Nunca suba o `.env`.
-2. **Histórico de commits**: faça commits reais à medida que revisar cada parte (uma branch por assunto, como `feature/rotas`, `feature/github-api`, `feature/contato`, `feature/dashboard`, `feature/tema-e-3d`, `chore/testes-e-ci`), abra pull requests e faça o merge. Não altere as datas dos commits.
-3. **Supabase**: crie o projeto, rode `supabase/schema.sql`, crie o usuário do dono e copie URL e chave `anon` para o `.env`.
-4. **EmailJS** (aviso por e-mail): crie um serviço de e-mail e um template que use `from_name`, `reply_to` e `message`; copie os 3 códigos para o `.env`.
-5. **Vercel**: importe o repositório, cadastre as mesmas variáveis do `.env` e publique. Cada push em `main` publica de novo.
-6. **Lighthouse**: depois do deploy, rode em modo mobile no site publicado (meta: 80 ou mais em performance). Se ficar abaixo, veja a aba "Opportunities" e me mande o relatório para ajustar.
-7. **Teste em celular e desktop**: abra o site publicado no seu celular e anote o que quebrar.
-8. **Vídeo**: siga o `docs/ROTEIRO-VIDEO.md`, com rosto e tela visíveis, no máximo 8 minutos, não listado no YouTube.
-9. **Entrega no Teams até 03/11**: link do GitHub, link da Vercel e link do vídeo.
+1. **Pull requests**: abrir e mesclar no GitHub os PRs das branches da vistoria de 28/10 (veja `docs/CONDUCAO-DA-IA.md`), esperando o CI ficar verde.
+2. **Supabase**: criar o projeto, rodar `supabase/schema.sql` no SQL Editor, criar o usuário do dono (Authentication > Users) e desligar o cadastro aberto.
+3. **EmailJS**: criar o serviço de e-mail e um template com `from_name`, `reply_to` e `message`.
+4. **Vercel**: cadastrar as 6 variáveis do `.env.example` em Settings > Environment Variables e fazer **Redeploy** (o Vite embute as variáveis no build).
+5. **Teste real em produção**: enviar uma mensagem pelo site, ver o e-mail chegar, entrar em `/admin`, marcar como respondida e escolher os destaques.
+6. **Descrições no GitHub**: preencher o "About" (descrição) de cada repositório; o site mostra "Projeto sem descrição" quando está vazio.
+7. **Habilidades**: conferir os níveis em `src/data/skills.ts`.
+8. **Lighthouse do site publicado**: rodar o PageSpeed Insights depois dos merges e guardar a captura para o vídeo.
+9. **Vídeo**: seguir o `docs/ROTEIRO-VIDEO.md` e o `docs/GUIA-DE-ESTUDO.md`, com rosto e tela visíveis, até 8 minutos, não listado no YouTube.
+10. **Entrega no Teams até 03/11**: link do GitHub, link da Vercel e link do vídeo.
 
 ## Atenção: TypeScript
 
