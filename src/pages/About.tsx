@@ -41,7 +41,8 @@ export default function About() {
           decoding="async"
           className="size-[120px] rounded-full border border-line bg-panel2"
         />
-        <div className="min-w-0 flex-1">
+        {/* min-w-60: no celular o texto desce para baixo da foto em vez de ficar espremido */}
+        <div className="min-w-60 flex-1">
           <p className="text-sm font-semibold text-accent">Sobre mim</p>
           <h1 className="mt-1 text-3xl sm:text-4xl">Quem sou eu?</h1>
           <p className="mt-3 max-w-xl text-mute">
