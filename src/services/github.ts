@@ -17,5 +17,7 @@ export async function fetchRepos(signal?: AbortSignal): Promise<Repo[]> {
   if (!res.ok) throw new Error(`O GitHub respondeu com o status ${res.status}`)
 
   const data = (await res.json()) as Repo[]
-  return data.filter((repo) => !repo.fork)
+  // Esconde cópias (forks) e o repositório especial do perfil (mesmo nome do usuário).
+  const profileRepo = env.githubUser.toLowerCase()
+  return data.filter((repo) => !repo.fork && repo.name.toLowerCase() !== profileRepo)
 }
