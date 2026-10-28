@@ -11,7 +11,7 @@ describe('contactSchema', () => {
     expect(contactSchema.safeParse(valid).success).toBe(true)
   })
 
-  it('ignora espaços nas pontas antes de validar', () => {
+  it('recusa nome que fica curto depois de tirar os espaços', () => {
     const result = contactSchema.safeParse({ ...valid, name: '  A  ' })
     expect(result.success).toBe(false)
   })
