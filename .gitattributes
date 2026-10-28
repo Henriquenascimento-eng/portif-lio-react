@@ -1,0 +1,6 @@
+# Força quebra de linha LF em todos os sistemas (o Prettier espera LF; o Git no Windows converte para CRLF).
+* text=auto eol=lf
+*.png binary
+*.webp binary
+*.avif binary
+*.woff2 binary
