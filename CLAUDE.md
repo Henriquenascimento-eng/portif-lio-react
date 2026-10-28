@@ -32,4 +32,7 @@ Portfólio em React + TypeScript (Vite). O dono é estudante e precisa conseguir
 ## Segurança
 
 - Nunca ler nem commitar `.env`. Novas variáveis entram em `.env.example` e na tabela do README.
-- Regras de acesso do banco ficam em `supabase/schema.sql`; o dashboard não pode depender só de esconder botões.
+- Regras de acesso do banco ficam em `supabase/schema.sql`; o dashboard não pode depender só de esconder botões. Quem acessa o dashboard é definido pela função `is_admin()`.
+- Senhas e credenciais nunca entram em código, README, docs, testes, `.env.example`, commits ou pull requests. Testes usam dados falsos ou mocks.
+- Usuários de login são criados pelo dono no painel do Supabase: nunca por SQL e nunca com a chave `service_role`.
+- Para testar o login de verdade, peça ao dono, ou use a credencial só na sessão do navegador, sem gravá-la. A tela de login não mostra senha nem dica de credencial.
