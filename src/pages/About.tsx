@@ -1,7 +1,8 @@
 import { SkillsSection } from '@/components/about/SkillsSection'
 import { Timeline } from '@/components/about/Timeline'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
-import { env } from '@/lib/env'
+// Foto local em WebP (240px para telas 2x): sem depender do servidor do GitHub e com cache longo.
+import avatar from '@/assets/avatar.webp'
 
 const timeline = [
   {
@@ -33,8 +34,8 @@ export default function About() {
     <section className="py-6">
       <div className="card flex flex-wrap items-center gap-6 p-6">
         <img
-          src={`https://github.com/${env.githubUser}.png?size=160`}
-          alt="Foto de perfil de Henrique no GitHub"
+          src={avatar}
+          alt="Foto de Henrique Nascimento"
           width={120}
           height={120}
           loading="lazy"
