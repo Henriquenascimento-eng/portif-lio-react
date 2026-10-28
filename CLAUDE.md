@@ -4,17 +4,18 @@ Portfólio em React + TypeScript (Vite). O dono é estudante e precisa conseguir
 
 ## Comandos
 
-- `npm run dev`, `npm run build`, `npm test`, `npm run lint`, `npm run format`
-- Antes de dizer que terminou: rode `npm run lint`, `npm test` e `npm run build`.
+- `npm run dev`, `npm run build`, `npm test`, `npm run lint`, `npm run format`, `npm run format:check`
+- Antes de dizer que terminou: rode `npm run lint`, `npm run format:check`, `npm test` e `npm run build`.
 
 ## Arquitetura
 
 - `src/pages`: uma página por rota. `src/components`: peças reutilizáveis e sem requisições.
 - Chamadas à API (GitHub, Supabase, EmailJS) ficam em `src/services`, nunca dentro de componentes.
-- Estado de servidor com TanStack Query em hooks (`src/hooks`). Estado global só para o tema (`src/store`).
+- Estado de servidor com TanStack Query em hooks (`src/hooks`, um hook por arquivo); páginas chamam hooks, e componentes recebem dados e funções por props. Estado global só para o tema e a barra lateral (`src/store`).
 - Funções puras em `src/lib`. Tipos em `src/types`.
 - Reaproveite `Button`, `ButtonLink`, `Skeleton`, `ErrorState` e `EmptyState`. Todo dado vindo de API precisa dos estados de carregamento, erro e vazio.
-- Peso: dashboard, cena 3D e SDK do Supabase ficam em `import()` dinâmico. Não importe `three` nem `@supabase/supabase-js` no pacote inicial.
+- Peso: dashboard, cena 3D e SDK do Supabase ficam em `import()` dinâmico. Não importe `three` nem `@supabase/supabase-js` no pacote inicial. A cena 3D só carrega depois de interação.
+- Imagens locais em WebP dentro de `src/assets`, sempre com `width`, `height` e `loading="lazy"`.
 
 ## Nomenclatura
 
