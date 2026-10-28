@@ -1,4 +1,3 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { ErrorState } from '@/components/ui/ErrorState'
@@ -6,22 +5,15 @@ import { Skeleton } from '@/components/ui/Skeleton'
 import { useAuth } from '@/hooks/useAuth'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { useFeaturedNames } from '@/hooks/useFeaturedNames'
+import { useMessages } from '@/hooks/useMessages'
 import { useRepos } from '@/hooks/useRepos'
+import { useSetMessageReplied } from '@/hooks/useSetMessageReplied'
+import { useToggleFeatured } from '@/hooks/useToggleFeatured'
 import { formatDate } from '@/lib/format'
-import { setRepoFeatured } from '@/services/featured'
-import { listMessages, setMessageReplied } from '@/services/messages'
 
 function Messages() {
-  const client = useQueryClient()
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['messages'],
-    queryFn: listMessages,
-  })
-  const toggle = useMutation({
-    mutationFn: ({ id, replied }: { id: string; replied: boolean }) =>
-      setMessageReplied(id, replied),
-    onSuccess: () => client.invalidateQueries({ queryKey: ['messages'] }),
-  })
+  const { data, isLoading, error, refetch } = useMessages()
+  const toggle = useSetMessageReplied()
 
   if (isLoading) return <Skeleton className="h-32" />
   if (error)
@@ -65,13 +57,9 @@ function Messages() {
 }
 
 function FeaturedPicker() {
-  const client = useQueryClient()
   const repos = useRepos()
   const featured = useFeaturedNames()
-  const toggle = useMutation({
-    mutationFn: ({ name, on }: { name: string; on: boolean }) => setRepoFeatured(name, on),
-    onSuccess: () => client.invalidateQueries({ queryKey: ['featured'] }),
-  })
+  const toggle = useToggleFeatured()
 
   if (repos.isLoading || featured.isLoading) return <Skeleton className="h-32" />
   if (repos.error || featured.error) {
