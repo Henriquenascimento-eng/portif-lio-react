@@ -32,6 +32,16 @@ describe('fetchRepos', () => {
     await expect(fetchRepos()).rejects.toBeInstanceOf(GithubRateLimitError)
   })
 
+  it('trata 403 como limite mesmo sem o cabeçalho de limite visível', async () => {
+    mockFetch({ status: 403 })
+    await expect(fetchRepos()).rejects.toBeInstanceOf(GithubRateLimitError)
+  })
+
+  it('trata 429 (muitas requisições) como limite', async () => {
+    mockFetch({ status: 429 })
+    await expect(fetchRepos()).rejects.toBeInstanceOf(GithubRateLimitError)
+  })
+
   it('falha com mensagem clara em outros erros', async () => {
     mockFetch({ status: 500 })
     await expect(fetchRepos()).rejects.toThrow('status 500')
