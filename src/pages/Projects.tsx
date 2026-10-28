@@ -42,6 +42,8 @@ export default function Projects() {
           ))}
         </div>
       )}
+      {/* Invisível na tela: mantém a ordem h1 > h2 > h3 (os cards usam h3) para leitores de tela */}
+      <h2 className="sr-only">Lista de projetos</h2>
       <ProjectGrid
         repos={visible}
         isLoading={isLoading}
