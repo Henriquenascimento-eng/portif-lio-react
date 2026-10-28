@@ -1,5 +1,6 @@
 import { ContactForm } from '@/components/contact/ContactForm'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { useSendMessage } from '@/hooks/useSendMessage'
 
 const links = [
   ['E-mail', 'mailto:riquesoares2007@gmail.com'],
@@ -10,6 +11,7 @@ const links = [
 
 export default function Contact() {
   useDocumentTitle('Contato')
+  const sendMessage = useSendMessage()
   return (
     <section className="grid gap-8 py-6 md:grid-cols-[1.4fr_1fr]">
       <div>
@@ -17,7 +19,7 @@ export default function Contact() {
         <p className="mt-2 mb-5 max-w-md text-mute">
           Conte sobre a vaga, o projeto ou a dúvida. A mensagem chega direto para mim.
         </p>
-        <ContactForm />
+        <ContactForm onSend={sendMessage.mutateAsync} />
       </div>
       <aside>
         <h2 className="text-xl">Outros caminhos</h2>
