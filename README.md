@@ -52,8 +52,11 @@ O site funciona sem elas (a lista de projetos só precisa do GitHub), mas o form
 ### Configurar o Supabase
 
 1. Crie um projeto em supabase.com e copie a URL e a chave `anon` em Settings > API.
-2. No SQL Editor, rode o arquivo `supabase/schema.sql` (tabelas, regras de segurança por linha).
-3. Em Authentication > Users, crie o usuário do dono com o e-mail `riquesoares2007@gmail.com` e desligue o cadastro aberto (Sign In / Providers > Allow new users to sign up).
+2. No SQL Editor, rode o arquivo `supabase/schema.sql` (tabelas, regras de segurança por linha). Ele pode ser rodado de novo sempre que mudar.
+3. Em Authentication > Users > Add user, crie pelo painel os usuários que podem entrar no dashboard: o dono (`riquesoares2007@gmail.com`) e a conta de gerente de teste (`login@gmail.com`). As senhas são definidas só no painel e não ficam no código.
+4. Desligue o cadastro aberto (Sign In / Providers > Allow new users to sign up).
+
+Quem pode ler as mensagens e escolher os destaques é decidido no banco pela função `is_admin()` do `schema.sql`, não pela tela. Para dar ou tirar acesso, edite a lista de e-mails nessa função e rode o arquivo de novo. Os usuários nunca são criados por SQL, e a chave `service_role` não é usada neste projeto.
 
 ## Scripts
 
