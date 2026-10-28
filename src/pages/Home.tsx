@@ -24,7 +24,8 @@ export default function Home() {
   return (
     <>
       <section className="grid items-center gap-8 py-6 lg:grid-cols-2">
-        <div>
+        {/* min-w-0: deixa o bloco de código rolar por dentro em vez de alargar a coluna no celular */}
+        <div className="min-w-0">
           <p className="text-sm font-semibold text-accent">Olá, eu sou o Henrique</p>
           <h1 className="mt-2 text-4xl sm:text-5xl">
             Automatizo processos e transformo <span className="gradient-text">dados</span> em

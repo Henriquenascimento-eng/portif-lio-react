@@ -22,7 +22,7 @@
   --ink: #e6eaf7;
   --mute: #9aa6c7;
   --accent: #16f2b3;
-  --violet: #8b5cf6;
+  --violet: #a78bfa; /* mais claro que #8b5cf6 para passar no contraste 4.5:1 sobre o painel */
   --pink: #ec4899;
   --link: #16f2b3;
   color-scheme: dark;
