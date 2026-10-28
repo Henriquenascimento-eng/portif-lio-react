@@ -2,8 +2,8 @@
 
 Site de portfólio em React que lista meus projetos direto da API do GitHub, recebe mensagens por um formulário de contato e tem um dashboard protegido por login. Feito para o CP3 (Stack e Harness Engineering) da FIAP.
 
-- Site publicado: _coloque aqui o link da Vercel_
-- Repositório: _coloque aqui o link do GitHub_
+- Site publicado: https://portif-lio-react-one.vercel.app
+- Repositório: https://github.com/Henriquenascimento-eng/portif-lio-react
 
 ## Tecnologias
 
@@ -24,13 +24,17 @@ Site de portfólio em React que lista meus projetos direto da API do GitHub, rec
 
 ## Como rodar
 
+Pré-requisitos: Node.js 22 ou mais novo e npm.
+
 ```bash
-git clone <url-do-repositorio>
-cd portfolio-henrique
-npm install
+git clone https://github.com/Henriquenascimento-eng/portif-lio-react.git
+cd portif-lio-react
+npm install            # também ativa os hooks do Husky
 cp .env.example .env   # preencha as variáveis (veja abaixo)
-npm run dev
+npm run dev            # abre em http://localhost:5173
 ```
+
+As mesmas variáveis precisam estar cadastradas na Vercel (Project > Settings > Environment Variables) para o formulário, o login e os destaques funcionarem no site publicado. Depois de cadastrar, é preciso fazer um novo deploy (Deployments > ... > Redeploy), porque o Vite embute as variáveis no momento do build.
 
 ### Variáveis de ambiente (`.env`)
 
@@ -53,14 +57,16 @@ O site funciona sem elas (a lista de projetos só precisa do GitHub), mas o form
 
 ## Scripts
 
-| Comando           | O que faz                               |
-| ----------------- | --------------------------------------- |
-| `npm run dev`     | Servidor de desenvolvimento             |
-| `npm run build`   | Checa os tipos e gera `dist/`           |
-| `npm run preview` | Serve o build local (para o Lighthouse) |
-| `npm test`        | Roda os testes                          |
-| `npm run lint`    | ESLint                                  |
-| `npm run format`  | Prettier                                |
+| Comando                | O que faz                                   |
+| ---------------------- | ------------------------------------------- |
+| `npm run dev`          | Servidor de desenvolvimento                 |
+| `npm run build`        | Checa os tipos e gera `dist/`               |
+| `npm run preview`      | Serve o build local (para o Lighthouse)     |
+| `npm test`             | Roda os testes                              |
+| `npm run lint`         | ESLint                                      |
+| `npm run format`       | Prettier (corrige a formatação)             |
+| `npm run format:check` | Prettier (só confere, como no CI)           |
+| `npm run typecheck`    | Confere os tipos do TypeScript sem compilar |
 
 ## Estrutura de pastas
 
@@ -74,9 +80,10 @@ src/
     contact/     ContactForm
     scene/       HeroScene (carga sob demanda), Scene3D, StaticCar
   pages/         uma página por rota (Home, Projects, ProjectDetail, About, Contact, Login, Admin, NotFound)
+  assets/        imagens importadas pelo código (avatar.webp)
   auth/          contexto de login, rota protegida
   data/          conteúdo editável (skills.ts: habilidades e níveis)
-  hooks/         lógica de dados e estado ligada ao React (useRepos, useAuth...)
+  hooks/         lógica de dados ligada ao React (useRepos, useMessages, useSendMessage, useAuth...)
   services/      chamadas externas (GitHub, Supabase, EmailJS), sem JSX
   store/         estado global do tema (Zustand)
   lib/           funções puras (validação, formatação, variáveis de ambiente)
@@ -131,19 +138,34 @@ Antes de cada commit, o Husky roda o `lint-staged` (ESLint e Prettier nos arquiv
 
 ## Testes
 
-- Validação do formulário de contato (campos vazios, e-mail inválido, mensagem curta, botão bloqueado durante o envio, erro de envio).
-- Bloqueio do dashboard sem login (redireciona para `/login`, não mostra o conteúdo enquanto carrega e libera quando há sessão).
-- Serviço do GitHub (descarte de forks, limite de requisições, erros).
+`npm test` roda 25 testes em 7 arquivos, todos ao lado do arquivo testado:
+
+- `ContactForm.test.tsx` e `contactSchema.test.ts`: validação do formulário (campos vazios, e-mail inválido, mensagem curta ou longa demais, botão bloqueado durante o envio, erro de envio).
+- `ProtectedRoute.test.tsx`: bloqueio do dashboard sem login (redireciona para `/login`, não mostra o conteúdo enquanto carrega e libera quando há sessão).
+- `github.test.ts`: serviço do GitHub (descarte de forks e do repositório de perfil, limite de requisições 403/429, outros erros).
+- `ProjectGrid.test.tsx`: carregamento, erro da API, limite do GitHub, lista vazia e dados de cada card.
+- `theme.test.ts`: o tema escolhido fica salvo e volta na próxima visita.
+- `HeroScene.test.tsx`: a cena 3D só carrega depois de interação e nunca com "reduzir movimento".
 
 ## Performance
 
 - Páginas divididas por rota (`React.lazy`): o visitante da home não baixa o formulário nem o dashboard.
-- A cena 3D (three.js) é um pacote separado, baixado só depois que a área aparece na tela, e é ignorada com "reduzir movimento" ou economia de dados.
+- A cena 3D (three.js, o maior pacote do site) só é baixada quando a área está na tela **e** a pessoa já interagiu (mouse, toque, rolagem ou teclado). Até lá aparece um carro em SVG. É ignorada com "reduzir movimento" ou economia de dados.
 - O SDK do Supabase também é carregado sob demanda.
 - Uma única consulta ao GitHub é compartilhada por todas as páginas (TanStack Query, `staleTime` de 10 minutos).
-- Fontes locais (`@fontsource`), skeletons com altura fixa e imagem com `width`, `height` e `loading="lazy"`, para evitar saltos de layout.
+- Foto do "Sobre" em WebP local (240 px, 8,7 KB) com `width`, `height` e `loading="lazy"`; arquivos de `/assets` com cache de 1 ano (`vercel.json`), pois têm hash no nome.
+- Fontes locais (`@fontsource`) e skeletons com altura fixa, para evitar saltos de layout.
 
-Para medir: `npm run build && npm run preview`, abrir no Chrome em janela anônima e rodar o Lighthouse em modo mobile. Também vale conferir no PageSpeed Insights depois do deploy.
+Medição (Lighthouse 12, modo mobile, `npm run build && npm run preview`, 28/10/2026):
+
+| Página      | Performance | Acessibilidade | Boas práticas | SEO |
+| ----------- | ----------- | -------------- | ------------- | --- |
+| `/` antes   | 96          | 95             | 100           | 91  |
+| `/` depois  | 97          | 100            | 100           | 100 |
+| `/projetos` | 96          | 100            | 100           | 100 |
+| `/sobre`    | 96          | 100            | 100           | 100 |
+
+Para medir de novo: `npx lighthouse http://localhost:4173 --form-factor=mobile --only-categories=performance,accessibility,best-practices,seo --view`, ou o PageSpeed Insights com a URL publicada.
 
 ## Harness de IA
 
