@@ -2,13 +2,13 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { contactSchema, type ContactValues } from '@/lib/contactSchema'
-import { sendContactMessage } from '@/services/messages'
 import { Button } from '../ui/Button'
 
-type Props = { onSend?: (values: ContactValues) => Promise<void> }
+// O componente só desenha e valida; quem envia de verdade é a página (via hook useSendMessage).
+type Props = { onSend: (values: ContactValues) => Promise<unknown> }
 type Status = { type: 'success' | 'error'; text: string } | null
 
-export function ContactForm({ onSend = sendContactMessage }: Props) {
+export function ContactForm({ onSend }: Props) {
   const {
     register,
     handleSubmit,
