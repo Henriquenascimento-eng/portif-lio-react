@@ -27,8 +27,30 @@ describe('fetchRepos', () => {
     expect(repos.map((repo) => repo.name)).toEqual(['meu-app'])
   })
 
+  it('esconde o repositório de perfil (mesmo nome do usuário)', async () => {
+    mockFetch({
+      status: 200,
+      body: [
+        { id: 1, name: 'meu-app', fork: false },
+        { id: 2, name: 'Henriquenascimento-eng', fork: false },
+      ],
+    })
+    const repos = await fetchRepos()
+    expect(repos.map((repo) => repo.name)).toEqual(['meu-app'])
+  })
+
   it('sinaliza o limite de requisições da API', async () => {
     mockFetch({ status: 403, headers: { 'x-ratelimit-remaining': '0' } })
+    await expect(fetchRepos()).rejects.toBeInstanceOf(GithubRateLimitError)
+  })
+
+  it('trata 403 como limite mesmo sem o cabeçalho de limite visível', async () => {
+    mockFetch({ status: 403 })
+    await expect(fetchRepos()).rejects.toBeInstanceOf(GithubRateLimitError)
+  })
+
+  it('trata 429 (muitas requisições) como limite', async () => {
+    mockFetch({ status: 429 })
     await expect(fetchRepos()).rejects.toBeInstanceOf(GithubRateLimitError)
   })
 
